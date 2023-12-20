@@ -1,0 +1,294 @@
+*{
+    font-family: 'Inter', sans-serif;
+}
+.salut{
+    margin-left: 2rem;
+}
+#textlogo{
+    font-family: 'Shadows Into Light', cursive;
+    font-size: xx-large;
+}
+.navbar{
+    background-color: #679978;
+}
+#rowfooter{
+    flex-direction: column;
+}
+#modal{
+    border: none;
+    border-radius: 1rem;
+    color: white;
+}
+
+#modal::backdrop{
+    background-color: rgb(0,0,0,0.5);
+}
+dialog h1{
+    text-align: center;
+}
+/* #co{
+    margin-right: 2rem;
+} */
+#close{
+    margin-left: 15rem;
+}
+#titreacc{
+    font-size: 2rem;
+    color: #A84343;
+}
+#modal2{
+    margin-bottom: 10rem;
+}
+
+#long{
+   background-color: #D8D8D8;
+   margin-top: 5rem;
+   margin-bottom: 7rem;
+   margin-right: 5rem;
+   border: 0.1em solid black;
+   border-radius: 2%;
+}
+#infos{
+    background-color: #D8D8D8;
+    margin-top: 5rem;
+    margin-bottom: 7rem;
+    padding: 2rem;
+    border: 0.1em solid black;
+    border-radius: 2%;
+}
+#logoinfos{
+    align-items: center;
+    margin-bottom: 1rem;
+    margin-left: 4rem;
+}
+#photochato, #logolongue{
+    border-radius: 1%;
+}
+#text&logo{
+    height:1rem;
+}
+
+
+.back{
+    background-image: url("images_chant/fondtest.png");
+}
+/* ------------------------------------------ INSCRIPTION ------------------------------------------------- */
+
+.general{
+    display: flex;
+    flex-direction: row;
+    margin-top: 1%;
+    margin-left: 8%;
+    width: 80rem;
+    height: 29rem;
+} 
+
+#forminscri{
+    padding-top: 2%;
+    padding-bottom: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20rem;
+    height: 17rem;
+    border-radius: 5px;
+    background-color: #D8D8D8;
+    border: solid 1px black;
+}
+
+#forminscri input{
+    margin-top: 1%;
+    width: 17rem;
+}
+
+.forminput{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.btnform{
+    align-items: center;
+    margin-top: 1%;
+    text-align: center;
+}
+
+.info{
+    border: solid 1px black;
+    width: 20rem;
+    height: 26.5rem;
+    margin-top: 1%;
+    padding-top: 4%;
+    margin-left: 5rem;
+}
+
+.modalites{
+    display: flex;
+    justify-content: center;
+    padding-bottom: 15%;
+    border: solid 1px black;
+    background-color: #A84343;
+    height: 10rem;
+    border-radius: 5px;
+}
+
+.modalites ul{
+    color: white;
+    text-align: left;
+    padding: 1%;
+} 
+
+.modform{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 7%;
+}  
+
+
+.forminscri p{
+    margin-top: 1%;
+    width: 17rem;
+    height: 7rem;
+    text-align: left;
+    color: rgb(0, 0, 0, 0.5);
+}
+
+.forminscri button{
+    margin-top: 2%;
+    color: black;
+    background-color: #679978;
+    border-radius: 5px;
+    border: solid 1px #679978;
+    box-shadow: 2px;
+} 
+#test{
+    position: relative;
+}
+.password-icon {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    width: 20px;
+    color: #8a2222;
+    transition: all 0.2s;
+}
+
+.password-icon:hover {
+    cursor: pointer;
+    color: #8d47ff;
+}
+.input-group-text{
+    margin-bottom: 1rem;
+}
+
+.daten{
+    width: 100%;
+}
+#envcand{
+    margin-left: 2.5rem;
+}
+
+/* ----------------------------------------------AUTORISATION PARENTALE------------------------------------------- */
+#montant span{
+    
+    border: 0.2em solid black;
+    padding: 1rem;
+}
+#montant{
+    text-align: center;
+}
+#dateInput{
+    text-decoration: none;
+}
+
+/* -------------------------------------------------SUIVI------------------------------------------------------------------ */
+
+.selectson{
+    width: 17rem;
+}
+
+.dataapi{
+    background-color: grey;
+    border: solid 1px black;
+    width: 20rem;
+    height: 15rem;
+}
+
+.dataapi img{
+    width: 70%;
+    height: auto;
+}
+
+.formapi{
+    padding-top: 1em;
+    padding-left: 0.3em;
+    background-color: #A84343;
+    height: 7rem;
+    width: 18rem;
+    border: solid 1px black;
+    border-radius: 5%;
+}
+
+.suivi{
+    border: solid 2px black;
+    width: 30rem;
+    height: 25rem;  
+    background-color: #A84343;
+    margin-left: 3rem;
+}
+
+#affichetext{
+    color: white;
+    text-align: left;
+    margin-top: 3%;
+    margin-left: 5%;
+    opacity: 0.3;
+}
+#fleche1{
+color: white;
+text-align: left;
+margin-top: 3%;
+margin-left: 5%;
+}
+#fleche2, #fleche3, #fleche4, #fleche5{
+    visibility: hidden;
+    
+}
+
+
+.containersuivi{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 60rem;
+}
+#facture{
+    margin-left: 9rem;
+    visibility: hidden;
+}
+
+/* ------------------------------------------------------ADMIN-------------------------------------------- */
+
+table{
+    border: solid 1px black;
+    width: 100%;
+    margin-top: 2%;
+}
+
+table td{
+    border: solid 1px black;
+}
+
+
+
+
+/* -------------------------------------------------------MODAL--------------------------------------------------- */
+
+.divco{
+    background-color: #A84343;
+    border: solid 5px black;
+}
