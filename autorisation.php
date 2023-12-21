@@ -1,27 +1,20 @@
 <?php
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
     include('includes_chant/testmodal.php');
     include('includes_chant/cobdd.php');
     require_once('includes_chant/dompdf/autoload.inc.php');
     $title = "Autorisation parentale";
+    $last_insert_id = isset($_GET['last_insert_id']) ? $_GET['last_insert_id'] : null;
 
-if (!empty($_POST['nom'])&&!empty($_POST['prenom'])&&!empty($_POST['tel'])&&!empty($_POST['adresse'])&&!empty($_POST['mail'])&&!empty($_POST['datejour'])&&!empty($_POST['nomenf'])&&!empty($_POST['prenomenf'])&&!empty($_POST['datenaiss'])) 
-
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['nom'])&&!empty($_POST['prenom'])&&!empty($_POST['tel'])&&!empty($_POST['adresse'])&&!empty($_POST['mail'])&&!empty($_POST['datejour'])&&!empty($_POST['nomenf'])&&!empty($_POST['prenomenf'])&&!empty($_POST['datenaiss']))
 {
-$sql = "INSERT INTO `responsable`(`nom`, `prenom`, `telephone`, `adresse`, `email`, `datejour`, `nomenfant`, `prenomenfant`, `datenaissance`) VALUES (:nom, :prenom,:tele, :addre, :mail, :datej, :nomenfe, :prenomenfe, :datenaiss)";
-$query = $db->prepare($sql);
-$query->bindValue(':nom',$_POST['nom'], PDO::PARAM_STR);
-$query->bindValue(':prenom',$_POST['prenom'], PDO::PARAM_STR);
-$query->bindValue(':tele',$_POST['tel'], PDO::PARAM_STR);
-$query->bindValue(':addre',$_POST['adresse'], PDO::PARAM_STR);
-$query->bindValue(':mail',$_POST['mail'], PDO::PARAM_STR);
-$query->bindValue(':datej',$_POST['datejour'], PDO::PARAM_STR);
-$query->bindValue(':nomenfe',$_POST['nomenf'], PDO::PARAM_STR);
-$query->bindValue(':prenomenfe',$_POST['prenomenf'], PDO::PARAM_STR);
-$query->bindValue(':datenaiss',$_POST['datenaiss'], PDO::PARAM_STR);
-$query->execute();
-var_dump($query);
+    $sql = "UPDATE `user` SET `nomres` = :nom, `prenomres` = :prenom, `numres` = :num WHERE `id_user` = $last_insert_id";
+    $query = $db->prepare($sql);
+    $query->bindValue(':nom', $_POST['nom'], PDO::PARAM_STR);
+    $query->bindValue(':prenom', $_POST['prenom'], PDO::PARAM_STR);
+    $query->bindValue(':num', $_POST['tel'], PDO::PARAM_STR);
+    $query->execute();
 }
 
 ?>
@@ -38,7 +31,7 @@ var_dump($query);
     </div>
     <h3> Autorisation parentale</h3>
         <div class="container" id="autorisation">
-            <form method="POST">
+            <form action='' method="POST">
                 <p class="autorisationp">
                     De participation aux concours de chant organisé par la mairie de Longuenesse pour un mineur.<br>
                     <input type="text" placeholder=" Adresse" name="adresse"><br>
@@ -60,7 +53,7 @@ var_dump($query);
                     Je certifie : <br>
                     <li>Qu’il/elle a pris connaissance du règlement du règlement du concours auquel il/elle est inscrit(e) et déclare expressément en accepter toutes les conditions</li>
                 </p>
-            <button onclick="pdf.js" type="submit">Envoyer</button>
+                <button onclick="pdf.js" type="submit">Envoyer</button>
             </form>
         </div>
         

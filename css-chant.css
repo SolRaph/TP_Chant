@@ -212,31 +212,50 @@ dialog h1{
 }
 
 .dataapi{
-    background-color: grey;
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #A84343;
     border: solid 1px black;
     width: 20rem;
-    height: 15rem;
+    height: 18rem;
+    color: white;
+    border-radius: 3px;
+}
+
+.btn-outline-success {
+    color: #679978; /* Nouvelle couleur du texte */
+    border-color: #679978; /* Nouvelle couleur de la bordure */
 }
 
 .dataapi img{
-    width: 70%;
+    width: 40%;
     height: auto;
+    border: solid 1px black;
+}
+
+#submitchant{
+    margin-top: 5%;
 }
 
 .formapi{
-    padding-top: 1em;
-    padding-left: 0.3em;
+    padding: 2rem 3rem 2rem 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-color: #A84343;
-    height: 7rem;
-    width: 18rem;
     border: solid 1px black;
-    border-radius: 5%;
+    border-radius: 3px;
+    width: 20rem;
 }
 
 .suivi{
+    margin-top: 5%;
     border: solid 2px black;
     width: 30rem;
-    height: 25rem;  
+    height: 29rem;  
     background-color: #A84343;
     margin-left: 3rem;
 }
@@ -265,6 +284,8 @@ margin-left: 5%;
     flex-direction: row;
     flex-wrap: wrap;
     width: 60rem;
+    margin-left: 25%;
+    margin-bottom: 5%;
 }
 #facture{
     margin-left: 9rem;
@@ -282,9 +303,6 @@ table{
 table td{
     border: solid 1px black;
 }
-
-
-
 
 /* -------------------------------------------------------MODAL--------------------------------------------------- */
 

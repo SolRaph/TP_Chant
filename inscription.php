@@ -1,6 +1,9 @@
 <?php
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
+
+use FontLib\Table\Type\head;
+
 include('includes_chant/cobdd.php');
 $title = "Inscription";
 
@@ -9,6 +12,16 @@ $title = "Inscription";
 
 if(!empty($_POST['nom'])&&!empty($_POST['prenom'])&&!empty($_POST['email'])&&!empty($_POST['mdp'])&&!empty($_POST['confirmer']))
     {
+        if ($_POST['datenaiss']>='16') {
+           
+            $sql = 'SELECT * FROM `user` WHERE `email`= :mail';
+            $query = $db->prepare($sql);
+            $query->bindValue(":mail", $_POST['email'],PDO::PARAM_STR);
+            $query->execute();
+            $verifEmail = $query->fetch();
+
+        if ($verifEmail === false) {
+                   
             $hash = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
             $sql = "INSERT INTO `user`(`nom`, `prenom`,`datenaiss`, `email`, `mdp`, `role`, `nomres`, `prenomres`, `numres`) VALUES (:nom, :prenom, :datenai, :email, :mdp, :roles, :nomres, :prenomres, :numres)";
             $query = $db->prepare($sql);
@@ -22,34 +35,18 @@ if(!empty($_POST['nom'])&&!empty($_POST['prenom'])&&!empty($_POST['email'])&&!em
             $query->bindValue(':prenomres', ' ', PDO::PARAM_STR);
             $query->bindValue(':numres', ' ', PDO::PARAM_STR);
             $query->execute();
-            header("Location:index.php");
 
-            $sql1 = "SELECT * FROM `user` INNER JOIN responsable WHERE user.user_id = responsable.user_id";
-            $query = $db->prepare($sql1);
-            $query->execute();
+            $last_insert_id = $db->lastInsertId();
+            
+            if ($_POST['datenaiss'] < "18" ) {
+                header("Location:autorisation.php?last_insert_id=$last_insert_id");
+            }
+            else {
+                header("Location:suivi.php");
+            }
 
-    
-    // Supposons que $dateNaissance contient la date de naissance au format "Y-m-d"
-$dateNaissance = $_POST['datenaiss']; // Assurez-vous de récupérer la date correctement depuis votre formulaire.
-
-// Convertir la date de naissance en objet DateTime
-$dateNaissanceObj = new DateTime($dateNaissance);
-
-// Obtenir la date actuelle
-$dateActuelle = new DateTime();
-
-// Calculer la différence entre les deux dates pour obtenir l'âge
-$age = $dateActuelle->diff($dateNaissanceObj)->y;
-
-// Vérifier si l'âge est inférieur à 18 ans (mineur)
-if ($age < 18) {
-    
-    header("Location: autorisation.php");
-    exit();
-}
-else
-{
-}}
+        
+    }}}
 ?>
 
 <!DOCTYPE html>
@@ -74,12 +71,20 @@ include('includes_chant/head-html.php');
                 <li>Le prix d’inscription est de 10€ par candidat.</li>
             </ul>
         </div>
-
+             <?php
+            if ($verifEmail !== false && !empty($_POST['email'])) {
+                echo('<div class="alert alert-danger" role="alert"> Adresse mail déja prise ! </div>');
+            } 
+            if ($_POST['datenaiss'] < "16" && !empty($_POST['datenaiss'])) {
+                echo('<div class="alert alert-danger" role="alert"> Ce concours est réservé aux plus de 16 ans désolé </div>');
+            }                          
+            ?>
         <form action="" method="POST" onsubmit="inscription()" class="card-body mt-5">
             <input class="input-group-text" type="text" name="nom" placeholder="Nom">
             <input class="input-group-text" type="text" name="prenom" placeholder="Prénom">
-            <input class="input-group-text daten" type="date" name="datenaiss" placeholder="Date de naissance" width="10rem">
+            <input class="input-group-text daten" type="texte" name="datenaiss" placeholder="Âge" width="10rem">
             <input class="input-group-text" type="text" name="email" placeholder="Adresse email">
+           
             <div id="test">
             <input class="input-group-text" id="affichemdp" type="password" name="mdp" placeholder="Mot de passe">
             <div >

@@ -11,6 +11,15 @@ $query = $db->prepare($sql);
 $query->bindValue(':candid',$_SESSION["facture"],PDO::PARAM_STR);
 $query->execute();
 $suivi = $query->fetch();
+
+$sqlCheck = "SELECT * FROM `bulletin` WHERE `id_candidat` = :id_candidat";
+$queryCheck = $db->prepare($sqlCheck);
+$queryCheck->bindValue(':id_candidat', $_SESSION['facture'], PDO::PARAM_STR);
+$queryCheck->execute();
+$existingCandidat = $queryCheck->fetch();
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +35,7 @@ include('includes_chant/head-html.php');
     <img class="mx-3" src="images_chant/suivi.svg" alt="">
     <h1>Suivi du dossier</h1>
 </div>
-    <div class="container d-flex">
+    <div class="containersuivi d-flex">
         <div class="mx-5 my-5">
             <form action="" class="formapi" method="POST">
                 <input class="input-group-text" type="text" name="chanson" placeholder="Titre de la chanson">
@@ -61,32 +70,52 @@ include('includes_chant/head-html.php');
                         if (isset($responsejson["tracks"])) {
                             echo("<div class='dataapi'>
                             <form action='' method='POST'>
-                                <select class='selectson' name='optionchant' id='select_chansons' onchange='updateImage(this)'>");
+                                <select class='form-select selectson' name='optionchant' id='select_chansons' onchange='updateImage(this)' aria-label='Choisissez votre titre'>");
                                 foreach ($responsejson["tracks"]["hits"] as $hit) {
                                     echo "<option value='" . $hit['track']['title'] . "' data-image='".$hit['track']['images']['coverart']."'>".$hit['track']['title'] . "</option>";
                                 }
                                 echo("</select>
-                                <img id='selectedImage' src='' alt='Image de la chanson'>
-                                <input type='submit' value='Envoyer la candidature'>
+                                <input id='submitchant' type='submit' value='Envoyer la candidature' class='btn btn-outline-light mx-5'>
                                 </form>
+                                <img id='selectedImage' src=''></img>
                             </div>");
                         }
                     }
                 }
 
-                if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['optionchant'])){
-                    $sql = "INSERT INTO `bulletin` (`id_candidat`, `chant`, `statut`, `id_facture`,`etatChant`, `cheque`, `statutPaiement`) VALUES (:id_candidat, :chant, :statut, :id_facture, :etatChant, :cheque, :statutPaiement)";
-                    $query = $db->prepare($sql);
-                    $query->bindValue(':id_candidat', $_SESSION['facture'], PDO::PARAM_STR);
-                    $query->bindValue(':chant', $_POST['optionchant'], PDO::PARAM_STR);
-                    $query->bindValue(':statut', 'Non approuvé', PDO::PARAM_STR);
-                    $query->bindValue(':id_facture', "2024".$_SESSION['facture'], PDO::PARAM_STR);
-                    $query->bindValue(':etatChant', 'Refusé', PDO::PARAM_STR);
-                    $query->bindValue(':cheque', 'Non reçu', PDO::PARAM_STR);
-                    $query->bindValue(':statutPaiement', 'Refusé', PDO::PARAM_STR);
-                    $query->execute();
-                    $insertbulletin = $query->fetch();
-                    var_dump($insertbulletin);
+                if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['optionchant'])) {
+                    // Vérifier si l'id_candidat est déjà présent dans la table
+                    $sqlCheck = "SELECT * FROM `bulletin` WHERE `id_candidat` = :id_candidat";
+                    $queryCheck = $db->prepare($sqlCheck);
+                    $queryCheck->bindValue(':id_candidat', $_SESSION['facture'], PDO::PARAM_STR);
+                    $queryCheck->execute();
+                    $existingCandidat = $queryCheck->fetch();
+
+                    $sqlCheck = "SELECT * FROM `bulletin` WHERE `chant` = :chant";
+                    $queryCheck = $db->prepare($sqlCheck);
+                    $queryCheck->bindValue(':chant', $_POST['optionchant'], PDO::PARAM_STR);
+                    $queryCheck->execute();
+                    $existingChant = $queryCheck->fetch();
+                
+                    if (!$existingCandidat && !$existingChant) {
+                        // Si le candidat n'est pas déjà présent, exécuter la requête INSERT INTO
+                        $sqlInsert = "INSERT INTO `bulletin` (`id_candidat`, `chant`, `statut`, `id_facture`,`etatChant`, `cheque`, `statutPaiement`) VALUES (:id_candidat, :chant, :statut, :id_facture, :etatChant, :cheque, :statutPaiement)";
+                        $queryInsert = $db->prepare($sqlInsert);
+                        $queryInsert->bindValue(':id_candidat', $_SESSION['facture'], PDO::PARAM_STR);
+                        $queryInsert->bindValue(':chant', $_POST['optionchant'], PDO::PARAM_STR);
+                        $queryInsert->bindValue(':statut', 'Non approuvé', PDO::PARAM_STR);
+                        $queryInsert->bindValue(':id_facture', "2024".$_SESSION['facture'], PDO::PARAM_STR);
+                        $queryInsert->bindValue(':etatChant', 'Refusé', PDO::PARAM_STR);
+                        $queryInsert->bindValue(':cheque', 'Non reçu', PDO::PARAM_STR);
+                        $queryInsert->bindValue(':statutPaiement', 'Refusé', PDO::PARAM_STR);
+                        $queryInsert->execute();
+                        $insertbulletin = $queryInsert->fetch();
+                        // var_dump($insertbulletin);
+                    }
+                    else {
+                        // Le candidat est déjà présent, vous pouvez afficher un message ou effectuer une autre action
+                        echo "Vous avez déjà soumis une candidature ou chant déjà choisi par un autre participant.";
+                    }
                 }
             ?>
 <!-- ---------------------------------------------------------------------------------------------------------- -->
@@ -98,7 +127,7 @@ include('includes_chant/head-html.php');
             <p class="affichetexte4" id="affichetext"><img id="fleche4" src="images_chant/flecheverte.svg" alt="fleche validé"> Vérification du paiement</p>
             <p class="affichetexte5" id="affichetext"><img id="fleche5" src="images_chant/flecheverte.svg" alt="fleche validé"> Bulletin validé, envoi de la facture.<br>
             Bonne chance !</p><br><br>
-            <a href="testpdf.php" target="_blank"><button id="facture">Générer votre facture</button></a>      
+            <a href="testpdf.php" target="_blank"><button id="facture" class='btn btn-outline-success'>Générer votre facture</button></a>      
         </div>
         <?php
             if ($suivi["etatChant"]==='Accepté')
